@@ -1,0 +1,17 @@
+# @format
+
+version: "3"
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    restart: unless-stopped
+    container_name: filebrowser
+    volumes:
+      - /home:/srv #Change to match your directory
+      - /home/{user}/compose/file-browser/filebrowser.db:/database/filebrowser.db #Change to match your directory
+      - /home/(user)/compose/file-browser/settings.json:/config/settings.json #Change to match your directory
+    environment:
+      - PUID=$(id -u)
+      - PGID=$(id -g)
+    ports:
+      - 8095:80 #Change the port if needed

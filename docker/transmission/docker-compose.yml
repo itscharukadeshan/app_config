@@ -1,0 +1,23 @@
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=asia/colombo
+      - TRANSMISSION_WEB_HOME= #optional
+      - USER=admin
+      - PASS=admin
+      - WHITELIST= #optional
+      - PEERPORT= #optional
+      - HOST_WHITELIST= #optional
+    volumes:
+      - /docker/appdata/transmission:/config
+      - /home/charuka/torrents/downloads:/downloads
+      - /home/charuka/torrents/watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
