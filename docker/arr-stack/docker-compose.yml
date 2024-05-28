@@ -1,3 +1,5 @@
+# @format
+
 services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -100,4 +102,4 @@ services:
     restart: unless-stopped
 
 networks:
-    main:
+  main:
