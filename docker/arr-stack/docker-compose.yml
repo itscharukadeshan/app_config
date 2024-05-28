@@ -1,10 +1,8 @@
-# @format
-
 services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     networks:
-      - arr-stack
+      - main
     container_name: qbittorrent
     environment:
       - PUID=1000
@@ -14,7 +12,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /docker/appdata/qbittorrent/config:/config
-      - /home/{user}/data/torrents:/torrents
+      - /home/charuka/data/torrents:/torrents
     ports:
       - 8080:8080
       - 6881:6881
@@ -23,7 +21,7 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     networks:
-      - arr-stack
+      - main
     container_name: prowlarr
     environment:
       - PUID=1000
@@ -37,7 +35,7 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     networks:
-      - arr-stack
+      - main
     container_name: radarr
     environment:
       - PUID=1000
@@ -45,15 +43,15 @@ services:
       - TZ=Asia/Colombo
     volumes:
       - /docker/appdata/radarr/config:/config
-      - /home/{user}/data:/data
-      - /home/{user}/data/torrents:/torrents
+      - /home/charuka/data:/data
+      - /home/charuka/data/torrents:/torrents
     ports:
       - 7878:7878
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     networks:
-      - arr-stack
+      - main
     container_name: sonarr
     environment:
       - PUID=1000
@@ -61,31 +59,15 @@ services:
       - TZ=Asia/Colombo
     volumes:
       - /docker/appdata/sonarr/config:/config
-      - /home/{user}/data:/data
-      - /home/{user}/data/torrents:/torrents
+      - /home/charuka/data:/data
+      - /home/charuka/data/torrents:/torrents
     ports:
       - 8989:8989
-    restart: unless-stopped
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    networks:
-      - arr-stack
-    container_name: readarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Colombo
-    volumes:
-      - /docker/appdata/readarr/config:/config
-      - /home/{user}/data:/data
-      - /home/{user}/data/torrents:/torrents
-    ports:
-      - 8787:8787
     restart: unless-stopped
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     networks:
-      - arr-stack
+      - main
     container_name: jellyfin
     environment:
       - PUID=1000
@@ -94,8 +76,8 @@ services:
       - JELLYFIN_PublishedServerUrl=192.168.0.5
     volumes:
       - /docker/appdata/jellyfin/config
-      - /home/{user}/data/media/tv:/tv
-      - /home/{user}/data/media/movies:/movies
+      - /home/charuka/data/media/tv:/tv
+      - /home/charuka/data/media/movies:/movies
     ports:
       - 8096:8096
       - 8920:8920
@@ -103,5 +85,19 @@ services:
       - 1900:1900/udp
     restart: unless-stopped
 
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    networks:
+      - main
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+      - TZ=Asia/Colombo
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+
 networks:
-  arr-stack:
+    main:
