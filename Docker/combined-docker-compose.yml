@@ -1,0 +1,312 @@
+# @format
+
+networks:
+  main: {}
+  navidrome_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+services:
+  audiobookshelf:
+    environment:
+      TZ: "${TZ}"
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    ports:
+      - published: 13378
+        target: 80
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/data/media/audiobooks:/audiobooks:rw
+      - /home/charuka/docker/appdata/audiobooks/config:/config:rw
+      - /home/charuka/docker/appdata/metadata:/metadata:rw
+      - /home/charuka/data/media/podcasts:/podcasts:rw
+  code-server:
+    container_name: code-server
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/code-server:latest
+    ports:
+      - published: 8443
+        target: 8443
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/docker/appdata/code/config:/config:rw
+      - /home/charuka/code:/data:rw
+      - /home/charuka/compose:/data/compose:rw
+    working_dir: /data
+  emby:
+    container_name: emby
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/emby:latest
+    ports:
+      - published: 8091
+        target: 8096
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/docker/appdata/emby/config:/config:rw
+      - /home/charuka/data/media/movies:/data/movies:rw
+      - /home/charuka/data/media/tv:/data/tvshows:rw
+      - /opt/vc/lib:/opt/vc/lib:rw
+  feishin:
+    container_name: feishin
+    image: ghcr.io/jeffvli/feishin:latest
+    networks:
+      navidrome_network: {}
+    ports:
+      - published: 9180
+        target: 9180
+    restart: unless-stopped
+  filebrowser:
+    container_name: filebrowser
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+    image: filebrowser/filebrowser:s6
+    ports:
+      - published: 8095
+        target: 80
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/file-browser/config/settings.json:/config/settings.json:rw
+      - /home/charuka/file-browser/database/filebrowser.db:/database/filebrowser.db:rw
+      - /home:/srv:rw
+  hedgedoc:
+    container_name: hedgedoc
+    environment:
+      CMD_ALLOW_ORIGIN: http://192.168.1.175:3000
+      CMD_DOMAIN: 192.168.1.175:3000
+      CMD_PORT: "3000"
+      CMD_PROTOCOL_USESSL: "false"
+      CMD_URL_ADDPORT: "false"
+      DB_HOST: mysql
+      DB_NAME: hedgedoc
+      DB_PASS: secret_password
+      DB_PORT: "3306"
+      DB_USER: hedgedoc
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/hedgedoc:latest
+    ports:
+      - published: 3000
+        target: 3000
+    restart: unless-stopped
+    volumes:
+      - /home/docker/appdata/hedgedoc/config:/config:rw
+  jellyfin:
+    container_name: jellyfin
+    environment:
+      JELLYFIN_PublishedServerUrl: http://jellyfin:8096
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/jellyfin:latest
+    networks:
+      main: {}
+    ports:
+      - protocol: udp
+        published: 1900
+        target: 1900
+      - protocol: udp
+        published: 7359
+        target: 7359
+      - published: 8096
+        target: 8096
+      - published: 8920
+        target: 8920
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/jellyfin/config:/config:rw
+      - /home/charuka/data/media/movies:/movies:rw
+      - /home/charuka/data/media/podcasts:/podcasts:rw
+      - /home/charuka/data/media/tv:/tv:rw
+  mysql:
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: hedgedoc
+      MYSQL_PASSWORD: secret_password
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: hedgedoc
+    image: mysql:latest
+    ports:
+      - published: 3306
+        target: 3306
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/mysql/data:/var/lib/mysql:rw
+  navidrome:
+    container_name: navidrome
+    environment:
+      ND_LOGLEVEL: info
+      ND_SCANSCHEDULE: 1h
+      ND_SESSIONTIMEOUT: 24h
+    image: deluan/navidrome:latest
+    networks:
+      navidrome_network: {}
+    ports:
+      - published: 4533
+        target: 4533
+    restart: unless-stopped
+    user: "${PGID}:${PUID}"
+    volumes:
+      - /home/charuka/data/media/music/music:/data:rw
+      - /home/charuka/data/media/music/music:/music:ro
+  ombi:
+    container_name: ombi
+    environment:
+      BASE_URL: /ombi
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/ombi:latest
+    networks:
+      main: {}
+    ports:
+      - published: 3579
+        target: 3579
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/ombi/config:/config:rw
+  pihole:
+    cap_add:
+      - NET_ADMIN
+    container_name: pihole
+    environment:
+      TZ: "${TZ}"
+      WEBPASSWORD: "${PIHOLE_PASSWORD}"
+    image: pihole/pihole:latest
+    ports:
+      - protocol: tcp
+        published: 53
+        target: 53
+      - protocol: udp
+        published: 53
+        target: 53
+      - protocol: tcp
+        published: 80
+        target: 80
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - /home/charuka/pihole/etc-pihole:/etc/pihole:rw
+  pingvin-share:
+    image: stonith404/pingvin-share
+    ports:
+      - published: 3100
+        target: 3000
+    restart: unless-stopped
+    volumes:
+      - /home/charuka/docker/appdata/file-share/data:/opt/app/backend/data:rw
+      - /home/charuka/docker/appdata/file-share/images:/opt/app/frontend/public/img:rw
+  prowlarr:
+    container_name: prowlarr
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/prowlarr:latest
+    networks:
+      main: {}
+    ports:
+      - published: 9696
+        target: 9696
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/prowlarr/config:/config:rw
+  qbittorrent:
+    container_name: qbittorrent
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TORRENTING_PORT: "6881"
+      TZ: "${TZ}"
+      WEBUI_PORT: "8080"
+    image: lscr.io/linuxserver/qbittorrent:latest
+    networks:
+      main: {}
+    ports:
+      - published: 6881
+        target: 6881
+      - protocol: udp
+        published: 6881
+        target: 6881
+      - published: 8080
+        target: 8080
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/qbittorrent/config:/config:rw
+      - /home/charuka/data/torrents:/torrents:rw
+  radarr:
+    container_name: radarr
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/radarr:latest
+    networks:
+      main: {}
+    ports:
+      - published: 7878
+        target: 7878
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/radarr/config:/config:rw
+      - /home/charuka/data:/data:rw
+      - /home/charuka/data/torrents:/torrents:rw
+  sonarr:
+    container_name: sonarr
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TZ}"
+    image: lscr.io/linuxserver/sonarr:latest
+    networks:
+      main: {}
+    ports:
+      - published: 8989
+        target: 8989
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/sonarr/config:/config:rw
+      - /home/charuka/data:/data:rw
+      - /home/charuka/data/torrents:/torrents:rw
+  transmission:
+    container_name: transmission
+    environment:
+      HOST_WHITELIST: ""
+      PASS: "${TRANSMISSION_PASS}"
+      PEERPORT: ""
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TRANSMISSION_WEB_HOME: ""
+      TZ: "${TZ}"
+      USER: "${USER}"
+      WHITELIST: ""
+    image: lscr.io/linuxserver/transmission:latest
+    ports:
+      - published: 9091
+        target: 9091
+      - published: 51413
+        target: 51413
+      - protocol: udp
+        published: 51413
+        target: 51413
+    restart: unless-stopped
+    volumes:
+      - /docker/appdata/transmission:/config:rw
+      - /home/charuka/torrents/downloads:/downloads:rw
+      - /home/charuka/torrents/watch:/watch:rw
+  watchtower:
+    command:
+      - --cleanup=true
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+version: "3"
