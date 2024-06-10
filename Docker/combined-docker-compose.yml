@@ -17,10 +17,10 @@ services:
         target: 80
     restart: unless-stopped
     volumes:
-      - /home/charuka/data/media/audiobooks:/audiobooks:rw
-      - /home/charuka/docker/appdata/audiobooks/config:/config:rw
-      - /home/charuka/docker/appdata/metadata:/metadata:rw
-      - /home/charuka/data/media/podcasts:/podcasts:rw
+      - /home/"${USER_PATH_NAME}"/data/media/audiobooks:/audiobooks:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/audiobooks/config:/config:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/metadata:/metadata:rw
+      - /home/"${USER_PATH_NAME}"/data/media/podcasts:/podcasts:rw
   code-server:
     container_name: code-server
     environment:
@@ -33,9 +33,9 @@ services:
         target: 8443
     restart: unless-stopped
     volumes:
-      - /home/charuka/docker/appdata/code/config:/config:rw
-      - /home/charuka/code:/data:rw
-      - /home/charuka/compose:/data/compose:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/code/config:/config:rw
+      - /home/"${USER_PATH_NAME}"/code:/data:rw
+      - /home/"${USER_PATH_NAME}"/compose:/data/compose:rw
     working_dir: /data
   emby:
     container_name: emby
@@ -49,9 +49,9 @@ services:
         target: 8096
     restart: unless-stopped
     volumes:
-      - /home/charuka/docker/appdata/emby/config:/config:rw
-      - /home/charuka/data/media/movies:/data/movies:rw
-      - /home/charuka/data/media/tv:/data/tvshows:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/emby/config:/config:rw
+      - /home/"${USER_PATH_NAME}"/data/media/movies:/data/movies:rw
+      - /home/"${USER_PATH_NAME}"/data/media/tv:/data/tvshows:rw
       - /opt/vc/lib:/opt/vc/lib:rw
   feishin:
     container_name: feishin
@@ -73,8 +73,8 @@ services:
         target: 80
     restart: unless-stopped
     volumes:
-      - /home/charuka/file-browser/config/settings.json:/config/settings.json:rw
-      - /home/charuka/file-browser/database/filebrowser.db:/database/filebrowser.db:rw
+      - /home/"${USER_PATH_NAME}"/file-browser/config/settings.json:/config/settings.json:rw
+      - /home/"${USER_PATH_NAME}"/file-browser/database/filebrowser.db:/database/filebrowser.db:rw
       - /home:/srv:rw
   hedgedoc:
     container_name: hedgedoc
@@ -123,9 +123,9 @@ services:
     restart: unless-stopped
     volumes:
       - /docker/appdata/jellyfin/config:/config:rw
-      - /home/charuka/data/media/movies:/movies:rw
-      - /home/charuka/data/media/podcasts:/podcasts:rw
-      - /home/charuka/data/media/tv:/tv:rw
+      - /home/"${USER_PATH_NAME}"/data/media/movies:/movies:rw
+      - /home/"${USER_PATH_NAME}"/data/media/podcasts:/podcasts:rw
+      - /home/"${USER_PATH_NAME}"/data/media/tv:/tv:rw
   mysql:
     container_name: mysql
     environment:
@@ -139,7 +139,7 @@ services:
         target: 3306
     restart: unless-stopped
     volumes:
-      - /home/charuka/mysql/data:/var/lib/mysql:rw
+      - /home/"${USER_PATH_NAME}"/mysql/data:/var/lib/mysql:rw
   navidrome:
     container_name: navidrome
     environment:
@@ -155,8 +155,8 @@ services:
     restart: unless-stopped
     user: "${PGID}:${PUID}"
     volumes:
-      - /home/charuka/data/media/music/music:/data:rw
-      - /home/charuka/data/media/music/music:/music:ro
+      - /home/"${USER_PATH_NAME}"/data/media/music/music:/data:rw
+      - /home/"${USER_PATH_NAME}"/data/media/music/music:/music:ro
   ombi:
     container_name: ombi
     environment:
@@ -193,8 +193,8 @@ services:
         target: 80
     restart: unless-stopped
     volumes:
-      - /home/charuka/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
-      - /home/charuka/pihole/etc-pihole:/etc/pihole:rw
+      - /home/"${USER_PATH_NAME}"/pihole/etc-dnsmasq.d:/etc/dnsmasq.d:rw
+      - /home/"${USER_PATH_NAME}"/pihole/etc-pihole:/etc/pihole:rw
   pingvin-share:
     image: stonith404/pingvin-share
     ports:
@@ -202,8 +202,8 @@ services:
         target: 3000
     restart: unless-stopped
     volumes:
-      - /home/charuka/docker/appdata/file-share/data:/opt/app/backend/data:rw
-      - /home/charuka/docker/appdata/file-share/images:/opt/app/frontend/public/img:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/file-share/data:/opt/app/backend/data:rw
+      - /home/"${USER_PATH_NAME}"/docker/appdata/file-share/images:/opt/app/frontend/public/img:rw
   prowlarr:
     container_name: prowlarr
     environment:
@@ -241,7 +241,7 @@ services:
     restart: unless-stopped
     volumes:
       - /docker/appdata/qbittorrent/config:/config:rw
-      - /home/charuka/data/torrents:/torrents:rw
+      - /home/"${USER_PATH_NAME}"/data/torrents:/torrents:rw
   radarr:
     container_name: radarr
     environment:
@@ -257,8 +257,8 @@ services:
     restart: unless-stopped
     volumes:
       - /docker/appdata/radarr/config:/config:rw
-      - /home/charuka/data:/data:rw
-      - /home/charuka/data/torrents:/torrents:rw
+      - /home/"${USER_PATH_NAME}"/data:/data:rw
+      - /home/"${USER_PATH_NAME}"/data/torrents:/torrents:rw
   sonarr:
     container_name: sonarr
     environment:
@@ -274,8 +274,8 @@ services:
     restart: unless-stopped
     volumes:
       - /docker/appdata/sonarr/config:/config:rw
-      - /home/charuka/data:/data:rw
-      - /home/charuka/data/torrents:/torrents:rw
+      - /home/"${USER_PATH_NAME}"/data:/data:rw
+      - /home/"${USER_PATH_NAME}"/data/torrents:/torrents:rw
   transmission:
     container_name: transmission
     environment:
@@ -300,8 +300,8 @@ services:
     restart: unless-stopped
     volumes:
       - /docker/appdata/transmission:/config:rw
-      - /home/charuka/torrents/downloads:/downloads:rw
-      - /home/charuka/torrents/watch:/watch:rw
+      - /home/"${USER_PATH_NAME}"/torrents/downloads:/downloads:rw
+      - /home/"${USER_PATH_NAME}"/torrents/watch:/watch:rw
   watchtower:
     command:
       - --cleanup=true
