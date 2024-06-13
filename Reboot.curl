@@ -1,1 +1,1 @@
-curl --http1.0 -X POST -d 'isTest=false&goformId=REBOOT_DEVICE' http://192.168.1.1/goform/goform_set_cmd_process -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -H "X-Requested-With: XMLHttpRequest" -H "Cookie: pageForward=home" -H "Referer: http://192.168.1.1/index.html?t=9028255"
+curl --http1.0 -X POST -d 'isTest=false&goformId=REBOOT_DEVICE' http://192.168.1.1/goform/goform_set_cmd_process -H "Content-Type: application/x-www-form-urlencoded"
