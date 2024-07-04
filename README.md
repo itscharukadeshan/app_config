@@ -28,7 +28,7 @@
  <tr>
    <td>
      <h3><a href="https://github.com/darktrojan/flatnotes">Flatnotes</a></h3>
-     <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/flatnotes.png" alt="Flatnotes" width="64" height="auto">
+     <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/flat-notes.png" alt="Flatnotes" width="64" height="auto">
      <p>Flatnotes is a simple note-taking app.</p>
    </td>
    <td>
