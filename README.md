@@ -133,6 +133,26 @@
      <p>Watchtower automatically updates your Docker containers.</p>
    </td>
  </tr>
+ <tr>
+   <td>
+     <h3><a href="https://hub.docker.com/_/postgres">PostgreSQL (postgres:15)</a></h3>
+     <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/postgres.svg" alt="PostgreSQL" width="64" height="auto">
+     <p>PostgreSQL is a powerful, open-source object-relational database system.</p>
+   </td>
+   <td>
+     <h3><a href="https://hub.docker.com/r/amerkurev/doku">Doku </a></h3>
+     <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dokuwiki.png" alt="Doku" width="64" height="auto">
+     <p>Doku is a simple to use and highly versatile Open Source wiki software.</p>
+   </td>
+</tr>
+<tr>
+   <td>
+     <h3><a href="https://hub.docker.com/r/excalidraw/excalidraw">Excalidraw </a></h3>
+     <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/excalidraw.png" alt="Excalidraw" width="auto" height="64">
+     <p>Excalidraw is a virtual collaborative whiteboard tool that lets you easily sketch diagrams that have a hand-drawn feel to them.</p>
+   </td>
+</tr>
+
 </table>
 
 ## 🎵 Audio/Radio List
