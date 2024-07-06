@@ -1,0 +1,45 @@
+magenta = "#FFEE99"
+cyan = "#95E6CB"
+white = "#FFFFFF"
+
+[colors.cursor]
+cursor = '#90E1C6'
+
+[mouse]
+hide_when_typing = true
+
+[cursor]
+  style = { shape = "Beam", blinking = "Always" }
+  blink_timeout = 0
+  thickness = 0.10
+  unfocused_hollow = true
+
+[keyboard]
+  bindings = [
+    { key = "V", mods = "Control", action = "Paste" },
+    { key = "T", mods = "Control", action = "SpawnNewInstance" },
+    { key = "W", mods = "Control", action = "Quit" },
+ ]
+
+[window]
+opacity = 0.85
+startup_mode = 'Maximized'
+
+[selection]
+
+save_to_clipboard = true
+
+[font]
+size = 11.0
+
+[font.normal]
+family = "JetBrains Mono"
+style = "Regular"
+
+[font.bold]
+family = "JetBrains Mono"
+style = "Bold"
+
+[font.italic]
+family = "JetBrains Mono"
+style = "Italic"
