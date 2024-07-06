@@ -1,4 +1,4 @@
- GNU nano 7.2                                                                      ./webhook.sh                                                                               
+                                                                             
 #!/bin/bash
 
 # Container name (replace with your actual container)
