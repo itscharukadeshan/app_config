@@ -38,6 +38,12 @@ services:
       WEBPASSWORD: "password" # update password
       PIHOLE_DNS_: "172.70.9.2#5053"
       DNSMASQ_LISTENING: "all"
+      # PRIVACYLEVEL: 4
+      # QUERY_DISPLAY: no
+      # ANALYZE_ONLY_A_AND_AAAA: true  #{ Enable the privacy setting to not log enaything }
+      # DBFILE: /dev/null
+      # DBIMPORT: no
+      # MAXDBDAYS: 0
 
     volumes:
       - "/home/{user_name}/docker/appdata/pihole/etc-pihole:/etc/pihole" #update username
