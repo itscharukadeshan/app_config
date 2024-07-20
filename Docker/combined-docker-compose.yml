@@ -323,6 +323,23 @@ services:
       - ${MEDIA_PATH}:/data:rw
       - ${TORRENTS_PATH}:/torrents:rw
 
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    networks:
+      - main
+    container_name: bazarr
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    volumes:
+      - ${APPDATA_PATH}/bazarr/config:/config
+      - ${MEDIA_PATH}/movies:/movies
+      - ${MEDIA_PATH}/media/tv:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
   requestrr:
     container_name: requestrr
     image: thomst08/requestrr
